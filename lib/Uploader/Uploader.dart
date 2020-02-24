@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
@@ -18,10 +19,10 @@ class UploaderPage extends StatefulWidget {
   String _resultSorting = "";
 
   //CONSTANT
-  final API_URL = "https://api.clarifai.com/v2/models/";
-  final API_ID = "rehash-model";
-  final API_KEY = "42db63a1f25a42dca73dc2344212faae";
-  final API_VERSION_ID = "119aae7da89d4511b41c05fa138a39db";
+  final API_URL = "";
+  final API_ID = "";
+  final API_KEY = "";
+  final API_VERSION_ID = "";
 
   UploaderPage({Key key, this.file}) : super(key: key);
 
@@ -29,8 +30,7 @@ class UploaderPage extends StatefulWidget {
 }
 
 class _UploaderPageState extends State<UploaderPage> {
-  final FirebaseStorage _storage =
-      FirebaseStorage(storageBucket: 'gs://rehash.appspot.com/');
+  final FirebaseStorage _storage = FirebaseStorage(storageBucket: '');
 
   void _startUpload() {
     String filePath = 'images/${DateTime.now()}.png';
@@ -73,23 +73,9 @@ class _UploaderPageState extends State<UploaderPage> {
     http.Response res = await http.post(url, headers: headers, body: body);
     var resObj = json.decode(res.body);
     var arr = resObj['outputs'][0]['data']['concepts'];
-    var names = [
-      "Recycable Bottle",
-      "Reusable Bottle",
-      "Trash",
-      "Recycable Can"
-    ];
-    var maxIndexItem = 0;
-    for (int i = 1; i < arr.length; i++) {
-      if (arr[i]['value'] > arr[maxIndexItem]['value']) {
-        maxIndexItem = i;
-      }
-    }
-
-    print(names[maxIndexItem]);
 
     setState(() {
-      widget._resultSorting = names[maxIndexItem];
+      widget._resultSorting = arr[0]['name'];
     });
   }
 
@@ -109,10 +95,16 @@ class _UploaderPageState extends State<UploaderPage> {
               LinearProgressIndicator(value: progressPercent),
               Text('${(progressPercent * 100).toStringAsFixed(2)} %'),
               widget._doneUploading && widget._uploadTask.isComplete
-                  ? RaisedButton(
-                      child: Text("Sort"),
-                      onPressed: _callAPI,
-                    )
+                  ? ButtonTheme(
+                      minWidth: 200.0,
+                      height: 100.0,
+                      child: RaisedButton(
+                        child: Text(
+                          "SORT!",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        onPressed: _callAPI,
+                      ))
                   : Text(""),
               widget._resultSorting == ""
                   ? Text("")
