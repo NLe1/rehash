@@ -40,4 +40,5 @@ Time-constraint for training and labeling data.
 
 In future we plan to use raspberry pi instead of arduino. Also we wish to use optical sensor which can detect the microorganisms inside a bottle and really differentiate between a reusable bottle and recyclable bottle.
 
-https://www.youtube.com/watch?v=PHuXxlQkUTo&feature=youtu.be
+[![](http://img.youtube.com/vi/PHuXxlQkUTo/0.jpg)](http://www.youtube.com/watch?v=PHuXxlQkUTo "REHASH DEMO")
+
